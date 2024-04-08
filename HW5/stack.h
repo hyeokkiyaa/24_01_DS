@@ -10,7 +10,7 @@ class Stack
 {
 private:
     int top;
-    int max_size=10;
+    int max_size;
     Element *stack;
 
 public:

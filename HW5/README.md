@@ -1,0 +1,1 @@
+This assignment is to create stack function with printing its result.
