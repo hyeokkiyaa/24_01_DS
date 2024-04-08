@@ -1,13 +1,25 @@
+#ifndef __STACK_H__
+#define __STACK_H__
 #include <iostream>
 
+using namespace std;
+
 typedef int Element;
+
 class Stack
 {
-    private:
+private:
     int top;
     int max_size;
-    Element * stack;
+    Element *stack;
 
-    public:
-    //functions
+public:
+    Stack(int size);
+    ~Stack();
+    void Push(Element item);
+    Element Pop();
+    bool IsFullsS() const;
+    bool IsEmptyS() const;
 };
+
+#endif
