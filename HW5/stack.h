@@ -14,13 +14,13 @@ private:
     Element *stack;
 
 public:
-    Stack(int size);
-    ~Stack();
-    void Push(Element item);
-    Element Pop();
-    bool IsFullsS() const;
-    bool IsEmptyS() const;
-    void Print();
+    Stack(int size);         // setting stack
+    ~Stack();                // to delete stack
+    void Push(Element item); // insert value
+    Element Pop();           // getting value top of the stack
+    bool IsFullsS() const;   // if it is true then stack is full
+    bool IsEmptyS() const;   // if it is true then stack is empty
+    void Print();            // printing elements of the stack, peaking
 };
 
 #endif
