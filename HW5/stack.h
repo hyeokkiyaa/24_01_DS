@@ -10,7 +10,7 @@ class Stack
 {
 private:
     int top;
-    int max_size;
+    int max_size=10;
     Element *stack;
 
 public:
@@ -20,6 +20,7 @@ public:
     Element Pop();
     bool IsFullsS() const;
     bool IsEmptyS() const;
+    void Print();
 };
 
 #endif

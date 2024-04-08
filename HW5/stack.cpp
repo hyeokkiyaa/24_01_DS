@@ -48,3 +48,11 @@ bool Stack::IsEmptyS() const
 {
     return (top == -1);
 }
+
+void Stack::Print()
+{
+    for (int i = top; i >= 0; i--)
+    {
+        cout << stack[i] << endl;
+    }
+}
