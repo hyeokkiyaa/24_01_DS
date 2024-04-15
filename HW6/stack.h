@@ -5,14 +5,12 @@
 using namespace std;
 
 typedef char Element;
-
 class Stack
 {
 private:
     int top;
     int max_size;
     Element *stack;
-
 public:
     Stack(int size);         // setting stack
     ~Stack();                // to delete stack

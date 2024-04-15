@@ -2,31 +2,27 @@
 #define __CALCULATOR_H__
 
 #include "stack.h"
+#include "stack2.h"
 #include <iostream>
 #include <string>
+#include <sstream>
 
 using namespace std;
 
 class Calculator
 {
 private:
-    int length;
-    double *num;
     string PostFixEquation;
-    double result;
     Stack *stack; // pointer to Stack object
+    Stack2 *stack2;
 
 public:
-    // Constructor and Destructor
-    Calculator(int stackSize = 100) : stack(new Stack(stackSize)) {}
-    ~Calculator() { delete stack; }
-
     // Member functions
     string getPostFixEquation(string st);
     double calculate(string st);
     static int priority(char ch); // Static member function
     bool isOperator(char ch);
-    void setNumber(string st); // Function definition
+    static double doOperator(char ch, double n1, double n2);
 };
 
 #endif

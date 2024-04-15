@@ -28,7 +28,8 @@ string Calculator::getPostFixEquation(string st)
                 shift++;
             }
             PostFixEquation += number; // 숫자를 후위 표기법 수식에 추가
-            i += shift - 1;            // 숫자 다음 위치로 이동
+            PostFixEquation += " ";
+            i += shift - 1; // 숫자 다음 위치로 이동
         }
         else if (isOperator(ch)) // 연산자이면
         {
@@ -61,6 +62,46 @@ string Calculator::getPostFixEquation(string st)
     return PostFixEquation;
 }
 
+double Calculator::calculate(string st)
+{
+    Stack2 *stack2 = new Stack2(100); // Stack 객체 생성, 매개변수 전달
+    string number;
+    double result;
+    int length = st.length();
+    for (int i = 0; i < length; i++)
+    {
+        char ch = st[i];
+        if (ch == ' ')
+        {
+            continue;
+        }
+        else if (isdigit(ch) || ch == '.') // 숫자이거나 소수점이면
+        {
+            number = "";
+            int shift = 1;
+            number += ch;
+            while (isdigit(st[i + shift]) || st[i + shift] == '.') // 숫자 또는 소수점이면 계속해서 읽음
+            {
+                number += st[i + shift];
+                shift++;
+            }
+            stack2->Push2(stod(number));
+            i += shift - 1; // 숫자 다음 위치로 이동
+        }
+        else if (isOperator(ch))
+        {
+            double a, b;
+            a = stack2->Pop2();
+            b = stack2->Pop2();
+            stack2->Push2(doOperator(ch, a, b));
+        }
+    }
+    result = stack2->Pop2();
+    delete stack2;
+    // 구현 필요
+    return result; // 임시 반환 값
+}
+
 int Calculator::priority(char ch) // Changed to static member function
 {
     switch (ch)
@@ -88,13 +129,21 @@ bool Calculator::isOperator(char ch)
     }
 }
 
-void Calculator::setNumber(string st)
+double Calculator::doOperator(char ch, double n1, double n2)
 {
-    // 구현 필요
-}
-
-double Calculator::calculate(string st)
-{
-    // 구현 필요
-    return 0.0; // 임시 반환 값
+    switch (ch)
+    {
+    case '+':
+        return n2 + n1;
+        break;
+    case '-':
+        return n2 - n1;
+        break;
+    case '*':
+        return n2 * n1;
+        break;
+    default:
+        return n2 / n1;
+        break;
+    }
 }
