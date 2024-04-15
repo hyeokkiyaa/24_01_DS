@@ -6,11 +6,13 @@ using namespace std;
 
 int main(void)
 {
-    Stack *stack = new Stack(100); //stack starts
     string str;
-    getline(cin,str);
+    cout << "Type Equation:" << endl;
+    cout << ">> ";
+    getline(cin, str);
 
-    
-    
+    Calculator calc;                      // Calculator 객체 생성
+    cout << calc.getPostFixEquation(str); // 객체를 통해 getPostFixEquation 함수 호출
+
     return 0;
 }

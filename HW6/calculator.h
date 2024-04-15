@@ -1,5 +1,6 @@
 #ifndef __CALCULATOR_H__
 #define __CALCULATOR_H__
+
 #include "stack.h"
 #include <iostream>
 #include <string>
@@ -13,12 +14,19 @@ private:
     double *num;
     string PostFixEquation;
     double result;
-    Stack *stack = new Stack(100); // stack starts
+    Stack *stack; // pointer to Stack object
 
 public:
-    string getPostFixEquation(string);
-    double calculate(string);
-    int priority(char);
+    // Constructor and Destructor
+    Calculator(int stackSize = 100) : stack(new Stack(stackSize)) {}
+    ~Calculator() { delete stack; }
+
+    // Member functions
+    string getPostFixEquation(string st);
+    double calculate(string st);
+    static int priority(char ch); // Static member function
+    bool isOperator(char ch);
+    void setNumber(string st); // Function definition
 };
 
 #endif
