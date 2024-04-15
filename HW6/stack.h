@@ -4,7 +4,7 @@
 
 using namespace std;
 
-typedef int Element;
+typedef char Element;
 
 class Stack
 {
@@ -21,6 +21,7 @@ public:
     bool IsFullsS() const;   // if it is true then stack is full
     bool IsEmptyS() const;   // if it is true then stack is empty
     void Print();            // printing elements of the stack, peaking
+    Element Peek();
 };
 
 #endif

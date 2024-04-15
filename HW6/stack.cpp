@@ -39,6 +39,15 @@ Element Stack::Pop() // retrieve item from stack
     }
 }
 
+Element Stack::Peek(){
+    if (IsEmptyS()){
+        cout << "Stack is empty" << endl;
+        return (Element)0;
+    } else {
+        return stack[top];
+    }
+}
+
 bool Stack::IsFullsS() const
 {
     return (top == max_size - 1); // if it is true then stack is full
