@@ -12,7 +12,7 @@ using namespace std;
 class Calculator
 {
 private:
-    string PostFixEquation;
+    string PostFixEquation="";
     Stack *stack; // pointer to Stack object
     Stack2 *stack2;
 

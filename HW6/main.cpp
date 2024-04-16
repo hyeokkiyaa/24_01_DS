@@ -10,9 +10,16 @@ int main(void)
     cout << ">> ";
     getline(cin, str);
 
-    Calculator calc;                      // Calculator 객체 생성
-    cout << calc.getPostFixEquation(str)<<endl; // 객체를 통해 getPostFixEquation 함수 호출
-    cout << calc.calculate(calc.getPostFixEquation(str));
+    Calculator calc;                      // Calculator Class call
+    cout << "Post Fixed Equation: " <<endl;
+    cout << ">> ";
+    cout << calc.getPostFixEquation(str)<<endl; // call getPostFixEquation under calc class
+
+    cout << "result: " <<endl;
+    cout << ">> ";
+    cout<<fixed;
+    cout.precision(2);
+    cout << calc.calculate(calc.getPostFixEquation(str));// call calculate under calc class
 
     return 0;
 }

@@ -4,102 +4,109 @@ using namespace std;
 
 string Calculator::getPostFixEquation(string st)
 {
-    Stack *stack = new Stack(100); // Stack 객체 생성, 매개변수 전달
-    string PostFixEquation = "";   // PostFixEquation 초기화
+    Stack *stack = new Stack(100); // Stack class (for char value) called
 
-    int length = st.length();
-    string number;
-    for (int i = 0; i < length; i++)
+    int length = st.length(); // length of the string that is got from the user
+
+    string number; // var for number to be changed later
+
+    for (int i = 0; i < length; i++) // one by one as char
     {
         char ch = st[i];
-        if (isspace(ch)) // 공백 문자면 건너뜀
+        if (isspace(ch)) // if ch is space then just skip
         {
             continue;
         }
 
-        if (isdigit(ch) || ch == '.') // 숫자이거나 소수점이면
+        else if (isdigit(ch) || ch == '.') // if ch is number or . meaning it is changed to be number
         {
-            number = "";
-            int shift = 1;
-            number += ch;
-            while (isdigit(st[i + shift]) || st[i + shift] == '.') // 숫자 또는 소수점이면 계속해서 읽음
+            number = "";                                           // reset to null
+            int shift = 1;                                         // for index to be added later
+            number += ch;                                          // char value added to number as it is just number
+            while (isdigit(st[i + shift]) || st[i + shift] == '.') // if the next value is number or . then keep adding
             {
-                number += st[i + shift];
-                shift++;
+                number += st[i + shift]; // add the value in
+                shift++;                 // shift the index
             }
-            PostFixEquation += number; // 숫자를 후위 표기법 수식에 추가
-            PostFixEquation += " ";
-            i += shift - 1; // 숫자 다음 위치로 이동
+            PostFixEquation += number; // add then complete number into final answer
+            PostFixEquation += " ";    // for convenience
+            i += shift - 1;            // shifting the loop
         }
-        else if (isOperator(ch)) // 연산자이면
+        else if (isOperator(ch)) // if it is operator
         {
-            while (!stack->IsEmptyS() && priority(stack->Peek()) >= priority(ch)) // 스택의 top에 있는 연산자의 우선순위가 현재 연산자보다 크거나 같을 때까지
+            while (!stack->IsEmptyS() && priority(stack->Peek()) >= priority(ch))
+            {                                    // check if the stack is empty or not and if ch's priority is higher
+                PostFixEquation += stack->Pop(); // if not then add to the return answer
+                PostFixEquation += " ";
+            }
+            stack->Push(ch); // otherwise just push
+        }
+
+        else if (ch == '(') // if it is open parenthesis
+        {
+            stack->Push(ch); // push it to stack
+        }
+        else if (ch == ')') // if ch is closing parenthesis
+        {
+            while (!stack->IsEmptyS() && stack->Peek() != '(') // until finding open parenthesis
             {
-                PostFixEquation += stack->Pop(); // 스택에서 pop하여 후위 표기법 수식에 추가
+                PostFixEquation += stack->Pop(); // stack pop and add to result answer
+                PostFixEquation += " ";
             }
-            stack->Push(ch); // 현재 연산자를 스택에 push
-        }
-        else if (ch == '(') // 여는 괄호이면
-        {
-            stack->Push(ch); // 스택에 push
-        }
-        else if (ch == ')') // 닫는 괄호이면
-        {
-            while (!stack->IsEmptyS() && stack->Peek() != '(') // 여는 괄호가 나올 때까지
-            {
-                PostFixEquation += stack->Pop(); // 스택에서 pop하여 후위 표기법 수식에 추가
-            }
-            stack->Pop(); // 여는 괄호를 스택에서 pop하여 제거
+            stack->Pop(); // removing opening parenthesis
         }
     }
 
-    while (!stack->IsEmptyS()) // 스택에 남아 있는 연산자들을 모두 pop하여 후위 표기법 수식에 추가
+    while (!stack->IsEmptyS()) // the rest in the stack to be pop out
     {
         PostFixEquation += stack->Pop();
+        PostFixEquation += " ";
     }
 
-    delete stack; // 동적으로 할당된 메모리 해제
+    delete stack; // free the memory
     return PostFixEquation;
 }
 
+// calculating postfixedequation
 double Calculator::calculate(string st)
 {
-    Stack2 *stack2 = new Stack2(100); // Stack 객체 생성, 매개변수 전달
-    string number;
-    double result;
-    int length = st.length();
+    Stack2 *stack2 = new Stack2(100); // stack2 class allocate memory (double var type)
+    string number;                    // number to be formed
+    double result;                    // returning result
+    int length = st.length();         // length of the string that is called
+
     for (int i = 0; i < length; i++)
     {
-        char ch = st[i];
-        if (ch == ' ')
+        char ch = st[i]; // for convenince set st[i] as ch
+        if (ch == ' ')   // if it is space skip
         {
             continue;
         }
-        else if (isdigit(ch) || ch == '.') // 숫자이거나 소수점이면
+        // process for retrieving number
+        else if (isdigit(ch) || ch == '.') // number or .
         {
             number = "";
             int shift = 1;
             number += ch;
-            while (isdigit(st[i + shift]) || st[i + shift] == '.') // 숫자 또는 소수점이면 계속해서 읽음
+            while (isdigit(st[i + shift]) || st[i + shift] == '.')
             {
                 number += st[i + shift];
                 shift++;
             }
-            stack2->Push2(stod(number));
-            i += shift - 1; // 숫자 다음 위치로 이동
+            stack2->Push2(stod(number)); // number to be pushed into the stack
+            i += shift - 1;
         }
-        else if (isOperator(ch))
+        else if (isOperator(ch)) // if it is operator
         {
-            double a, b;
+            double a, b; // get two values
             a = stack2->Pop2();
             b = stack2->Pop2();
-            stack2->Push2(doOperator(ch, a, b));
+            stack2->Push2(doOperator(ch, a, b)); // do calculations in each case
         }
     }
-    result = stack2->Pop2();
-    delete stack2;
-    // 구현 필요
-    return result; // 임시 반환 값
+    result = stack2->Pop2(); // result to be added
+    delete stack2;           // free the memory
+    return result;
 }
 
 int Calculator::priority(char ch) // Changed to static member function
