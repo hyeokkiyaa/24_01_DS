@@ -5,7 +5,7 @@
 
 using namespace std;
 
-typedef string Element;
+typedef int Element;
 
 typedef struct t_list_node
 {
@@ -22,8 +22,8 @@ public:
     DList();
     ~DList();
     void delete_list(list_node *node_ptr);
-    list_node *Retrieve(Element data);
-    list_node *Retrieve(int index);
+    //list_node *Retrieve(Element data);
+    //list_node *Retrieve(int index);
     void Insert(Element data);
     void Delete(Element data);
     void Invert();
