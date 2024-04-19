@@ -22,8 +22,8 @@ public:
     DList();
     ~DList();
     void delete_list(list_node *node_ptr);
-    //list_node *Retrieve(Element data);
-    //list_node *Retrieve(int index);
+    list_node *Retrieve(Element data);
+    list_node *Retrieve_index(int index);
     void Insert(Element data);
     void Delete(Element data);
     void Invert();

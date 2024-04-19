@@ -8,24 +8,23 @@ void DList::Print()
     {
         cout << cur->data << endl;
     }
-    delete cur;
 }
 
 void DList::Insert(Element data)
 {
     list_node *new_node = new list_node;
     new_node->data = data;
-    if (head->link == NULL)
+    new_node->link = nullptr;
+    if (head== nullptr)
     {
-        head->link = new_node;
-        new_node->link = NULL;
+        head = new_node;
     }
     else
     {
         // add to the last
-        list_node *cur = NULL;
+        list_node *cur = nullptr;
         cur = head;
-        while (cur->link != NULL)
+        while (cur->link != nullptr)
         {
             cur = cur->link;
         }
@@ -34,18 +33,43 @@ void DList::Insert(Element data)
 }
 DList::DList()
 {
-    head = new list_node;
-    head->data = NULL;
-    head->link = NULL;
+    head =nullptr;
 }
 
 DList::~DList()
 {
-    list_node *cur = NULL;
-    for (cur = head; cur != NULL; cur = cur->link)
-    {
-        delete(cur);
+    delete_list(head);
+}
+
+void DList::delete_list(list_node *node_ptr){
+    while(node_ptr!=nullptr){
+        list_node* temp = node_ptr;
+        node_ptr = node_ptr->link;
+        delete temp;
     }
 }
-list_node DList::*Retrieve(Element data);
-list_node DList::*Retrieve(int index);
+
+list_node* DList::Retrieve(Element data){
+    list_node* cur =head;
+    while(cur!=NULL){
+        if(cur->data == data){
+            return cur;
+        }
+        cur = cur -> link;
+    }
+    return nullptr;
+}
+
+list_node* DList::Retrieve_index(int index){
+    int count =0;
+    list_node* cur = head;
+    while(cur!=NULL){
+        if(count == index)
+        {
+            return cur;
+        }
+        count++;
+        cur = cur->link;
+    }
+    return nullptr;
+}
