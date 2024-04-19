@@ -1,10 +1,15 @@
 #ifndef __STACK_H__
 #define __STACK_H__
 #include <iostream>
-
+#include <string>
+#include <fstream>
 using namespace std;
 
-typedef int Element;
+typedef struct{
+    int id;
+    string name;
+    string email;
+}Element;
 
 typedef struct t_list_node
 {
@@ -22,6 +27,10 @@ public:
     void Push(Element item); // insert value
     Element Pop();           // getting value top of the stack   
     Element Peek();           // printing elements of the stack, peaking
+    void Load(string filename);
+    int Tokenizer(string st);
+    void Print();
+    bool IsEmpty();
 };
 
 #endif

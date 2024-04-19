@@ -4,12 +4,16 @@ using namespace std;
 
 int main(void){
     Linked_Stack st;
-    
-    st.Push(10);
-    st.Push(20);
-    st.Push(30);
-    
-    cout <<" "<<endl;
+    string filename;
 
-    cout <<st.Pop()<<endl;
+    cout<<"Enter Filename: ";
+    cin >> filename;
+    st.Load(filename);
+
+    cout <<"\nHere Result"<<endl;
+    cout <<"==========="<<endl;
+    st.Print();
+
+
+    return 0;
 }
