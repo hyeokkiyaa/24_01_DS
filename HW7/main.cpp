@@ -1,17 +1,15 @@
-#include "DList.h"
 #include "stack.h"
 #include <iostream>
 using namespace std;
 
 int main(void){
-    DList dl;
-    int num;
-    cin >> num;
-    dl.Insert(num);
-    cin >> num;
-    dl.Insert(num);
-    cin >> num;
-    dl.Insert(num);
-    dl.Invert();
-    dl.Print();
+    Linked_Stack st;
+    
+    st.Push(10);
+    st.Push(20);
+    st.Push(30);
+    
+    cout <<" "<<endl;
+
+    cout <<st.Pop()<<endl;
 }

@@ -5,6 +5,7 @@
 using namespace std;
 
 typedef char Element;
+
 class Stack
 {
 private:

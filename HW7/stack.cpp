@@ -2,30 +2,43 @@
 
 using namespace std;
 
-
-
-void Stack::Push(Element item) // inserting value in stack
-{
-    list.Insert(item);
+Linked_Stack::Linked_Stack(){
+    top = NULL;
 }
 
-Element Stack::Pop() // retrieve item from stack
-{
-    if(list.IsEmpty()){
-        return (Element)0;
+Linked_Stack::~Linked_Stack(){
+    list_node* new_node;
+    while(top!=NULL){
+        new_node = top;
+        top = top->link;
+        delete new_node;
     }
-    Element top_element = list.Retrieve_index(0)->data;
-
-    list.Delete(top_element);
-    return top_element;
 }
 
-Element Stack::Peek(){
-    if(list.IsEmpty()){
-        return (Element)0;
-    }
+void Linked_Stack::Push(Element item) // inserting value in stack
+{
+    list_node *new_node = new list_node;
+    if(new_node == NULL) return;
+    new_node->data = item;
+    new_node->link = top;
+    top = new_node;
+}
+
+Element Linked_Stack::Pop() // retrieve item from stack
+{
     Element e;
-    e = list.Retrieve_index(0)->data;
+    list_node *del;
+    if(top==NULL){
+        return (Element)0;
+    }
+    e=top->data;
+    del = top;
+    top = top->link;
+    delete del;
     return e;
+}
+
+Element Linked_Stack::Peek(){
+    return top->data;
 }
 
