@@ -1,24 +1,21 @@
 #ifndef __STACK_H__
 #define __STACK_H__
 #include <iostream>
+#include "DList.h"
 
 using namespace std;
 
-typedef char Element;
+typedef int Element;
 class Stack
 {
 private:
-    int top;
-    int max_size;
-    Element *stack;
+    DList list;
+    
 public:
-    Stack(int size);         // setting stack
+    Stack();         // setting stack
     ~Stack();                // to delete stack
     void Push(Element item); // insert value
     Element Pop();           // getting value top of the stack
-    bool IsFullsS() const;   // if it is true then stack is full
-    bool IsEmptyS() const;   // if it is true then stack is empty
-    void Print();            // printing elements of the stack, peaking
     Element Peek();
 };
 

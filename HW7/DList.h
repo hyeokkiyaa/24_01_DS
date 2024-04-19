@@ -29,6 +29,7 @@ public:
     void Invert();
     void Print();
     bool IsEmpty();
+    int GetLength();
 };
 
 #endif
