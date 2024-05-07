@@ -15,6 +15,7 @@ void input(string &line, char &option, int &num, string &name)
             if (spaceIndex != -1)
             {
                 num = stoi(line.substr(2, spaceIndex - 2));
+                line = line.substr(2,spaceIndex-2);
                 name = line.substr(spaceIndex + 1);
             }
         }
@@ -25,6 +26,7 @@ void input(string &line, char &option, int &num, string &name)
         break;
     }
 }
+
 
 int main(void)
 {
@@ -46,6 +48,14 @@ int main(void)
         case 'a':
             bst.insert_node(num,name);
             break;
+
+        case 'd':
+            bst.delete_node(num);
+        
+        case 'p':
+            bst.Print();
+            break;
         }
+
     } while (option != 'q');
 }
