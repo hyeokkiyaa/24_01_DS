@@ -6,42 +6,34 @@ using namespace std;
 void input(string &line, char &option, int &num, string &name)
 {
     option = line[0];
-    string trimmedLine = line.substr(2);
-
-    string number;
-    int spaceIndex;
     switch (option)
     {
     case 'a':
-        spaceIndex = line.find(' ');
-        number = line.substr(0,spaceIndex);
-        num = stoi(number);
-        trimmedLine = line.substr(spaceIndex);
-        name = line;
+        if (line.length() > 2)
+        {
+            int spaceIndex = line.find(' ');
+            if (spaceIndex != -1)
+            {
+                num = stoi(line.substr(2, spaceIndex - 2));
+                name = line.substr(spaceIndex + 1);
+            }
+        }
         break;
 
     case 'd':
-    
+        num = stoi(line.substr(2));
         break;
     }
-
-    while (trimmedLine[index] != ' ')
-    {
-        number += trimmedLine[index++];
-    }
-    num = stoi(number);
-
-    name = trimmedLine.substr(index + 1);
 }
 
 int main(void)
 {
     string line;
-    char option = '\0';
-    int num;
-    string name;
+    char option;
+    int num = 0;
+    string name = "";
     BST bst;
-    while (option != 'q')
+    do
     {
         getline(cin, line);
         input(line, option, num, name);
@@ -51,9 +43,9 @@ int main(void)
             break;
             break;
 
-        default:
-            cout << 1 << endl;
+        case 'a':
+            bst.insert_node(num,name);
             break;
         }
-    }
+    } while (option != 'q');
 }

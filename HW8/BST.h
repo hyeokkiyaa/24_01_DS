@@ -15,10 +15,11 @@ class BST{
         ~BST();
         bool IsEmpty();
         void insert_node(int num,string data);
-        void delete_tree(tree_node* tree);
+        void delete_node(int num);
+        void free_tree(tree_node* tree);
         void inorder(tree_node* ptr);
         void Print();
-        //BST
-        tree_node* search(int key);
+        tree_node* search_insert(int key);
+        tree_node* search_delete(int key);
         
 };
