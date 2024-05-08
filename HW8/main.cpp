@@ -51,6 +51,7 @@ int main(void)
 
         case 'd':
             bst.delete_node(num);
+            break;
         
         case 'p':
             bst.Print();

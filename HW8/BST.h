@@ -19,7 +19,5 @@ class BST{
         void free_tree(tree_node* tree);
         void inorder(tree_node* ptr);
         void Print();
-        tree_node* search_insert(int key);
-        tree_node* search_delete(int key);
-        
+        tree_node* search_insert(int key);        
 };

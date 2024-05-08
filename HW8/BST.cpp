@@ -1,17 +1,20 @@
 #include "BST.h"
 using namespace std;
 
-BST::BST()
+//Constructor of class
+BST::BST()  
 {
     root = NULL;
 }
 
+//Deconstrctoor of class
 BST::~BST()
 {
     free_tree(root);
     root = NULL;
 }
 
+//call recursively to free the memory that was allocated dynamically
 void BST::free_tree(tree_node *ptr)
 {
     if (ptr)
@@ -22,19 +25,22 @@ void BST::free_tree(tree_node *ptr)
     }
 }
 
+//checking if bst is empty
 bool BST::IsEmpty()
 {
     return (root == NULL);
 }
 
+//inserting node
 void BST::insert_node(int num, string data)
 {
-    tree_node *ptr = NULL, *parent = NULL;
-    parent = search_insert(num);
-    if (parent || IsEmpty())
+    tree_node *ptr = NULL, *parent = NULL;  //ptr to pointing current node, parent node as the top node where node will be added
+    parent = search_insert(num);    //finding parentnode to add in
+    if (parent || IsEmpty())    //if parent is NULL or binary tree is empty meaning ready to add
     {
-        ptr = new tree_node;
-        if (ptr == NULL)
+        ptr = new tree_node;    //give memory
+        //handle case when memory is full
+        if (ptr == NULL)    
         {
             cerr << "The memory is full" << endl;
             exit(1);
@@ -110,117 +116,95 @@ tree_node *BST::search_insert(int key)
     return NULL;
 }
 
-void BST::delete_node(int key)
-{
-    tree_node *parent = search_delete(key);
-    if (parent == NULL)
-    {
+void BST::delete_node(int key) {
+    tree_node *parent = NULL;
+    tree_node *now = root;
+    int isDirection = 0; // 0 for left, 1 for right
+
+    while (now != NULL && now->key != key) {
+        parent = now;
+        if (key < now->key) {
+            now = now->left_child;
+            isDirection = 0;
+        } else {
+            now = now->right_child;
+            isDirection = 1;
+        }
+    }
+
+    if (now == NULL) {
         cout << to_string(key) << " is not in the tree" << endl;
         return;
     }
 
-    tree_node *del = NULL;
+    if (now->left_child == NULL && now->right_child == NULL) {
+        if (now == root) {
+            root = NULL;
+        } else {
+            if (isDirection == 0) {
+                parent->left_child = NULL;
+            } else {
+                parent->right_child = NULL;
+            }
+        }
+        delete now;
+    } else if (now == root) {
+        if (now->left_child == NULL) {
+            root = now->right_child;
+        } else if (now->right_child == NULL) {
+            root = now->left_child;
+        } else {
+            tree_node* beneath = now->right_child;
+            tree_node* beneathParent = now;
 
-    if (IsEmpty())
-    {
-        cout << "BST is empty" << endl;
-        return;
-    }
+            while (beneath->left_child != NULL) {
+                beneathParent = beneath;
+                beneath = beneath->left_child;
+            }
 
-    int checkRightOrLeft = 0; // right:0 left:1
-    if (parent->left_child && parent->left_child->key == key)
-    {
-        del = parent->left_child;
-        checkRightOrLeft = 1;
-    }
-    else if (parent->right_child != NULL && parent->right_child->key==key)
-    {
-        del = parent->right_child;
-    }
+            beneath->left_child = now->left_child;
+            if (beneathParent != now) {
+                beneathParent->left_child = beneath->right_child;
+                beneath->right_child = now->right_child;
+            }
 
-    if (del->left_child == NULL && del->right_child == NULL)
-    {
-        if (checkRightOrLeft == 0)
-        {
-            parent->left_child = NULL;
+            root = beneath;
         }
-        else
-        {
-            parent->right_child = NULL;
-        }
-        delete del;
-    }
-    else if (del->left_child != NULL && del->right_child == NULL)
-    {
-        if (checkRightOrLeft == 1)
-        {
-            parent->right_child = del->left_child;
-        }
-        else
-        {
-            parent->left_child = del->left_child;
-        }
-        delete del;
-    }
-    else if (del->left_child == NULL && del->right_child != NULL)
-    {
-        if (checkRightOrLeft == 1)
-        {
-            parent->right_child = del->right_child;
-        }
-        else
-        {
-            parent->left_child = del->right_child;
-        }
-        delete del;
-    }
-    else
-    {
-        tree_node *beneathChild = del->right_child;
-        tree_node *beneath = del;
+        delete now;
+    } else {
+        if (now->left_child == NULL) {
+            if (isDirection == 0) {
+                parent->left_child = now->right_child;
+            } else {
+                parent->right_child = now->right_child;
+            }
+        } else if (now->right_child == NULL) {
+            if (isDirection == 0) {
+                parent->left_child = now->left_child;
+            } else {
+                parent->right_child = now->left_child;
+            }
+        } else {
+            tree_node* beneath = now->right_child;
+            tree_node* beneathParent = now;
 
-        while (beneathChild->left_child != NULL)
-        {
-            beneath = beneathChild;
-            beneathChild = beneathChild->left_child;
-        }
+            while (beneath->left_child != NULL) {
+                beneathParent = beneath;
+                beneath = beneath->left_child;
+            }
 
-        if (checkRightOrLeft == 0)
-        {
-            parent->left_child = beneathChild;
-        }
-        else
-        {
-            parent->right_child = beneathChild;
-        }
+            beneath->left_child = now->left_child;
+            if (beneathParent != now) {
+                beneathParent->left_child = beneath->right_child;
+                beneath->right_child = now->right_child;
+            }
 
-        beneath->left_child = beneathChild->right_child;
-
-        beneathChild->left_child = del->left_child;
-        beneathChild->right_child = del->right_child;
-        delete del;
-    }
-}
-
-tree_node *BST::search_delete(int key)
-{
-    tree_node *tree = root;
-    tree_node *parent = NULL;
-    while (tree)
-    {
-        if (tree->key == key)
-        {
-            return parent;
-        }
-        parent = tree;
-        if (key < tree->key)
-        {
-            tree = tree->left_child;
-        }
-        else
-        {
-            tree = tree->right_child;
+            if (isDirection == 0) {
+                parent->left_child = beneath;
+            } else {
+                parent->right_child = beneath;
+            }
+            delete now;
         }
     }
-    return NULL;
 }
