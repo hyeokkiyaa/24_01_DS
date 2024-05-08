@@ -1,13 +1,16 @@
+// time taken: about 11 hours
 #include <iostream>
 #include <string>
 #include "BST.h"
 using namespace std;
 
+// input function made
 void input(string &line, char &option, int &num, string &name)
 {
     option = line[0];
     switch (option)
     {
+    // case of a will have to obtain two values one for key and one for name in order
     case 'a':
         if (line.length() > 2)
         {
@@ -15,7 +18,7 @@ void input(string &line, char &option, int &num, string &name)
             if (spaceIndex != -1)
             {
                 num = stoi(line.substr(2, spaceIndex - 2));
-                line = line.substr(2,spaceIndex-2);
+                line = line.substr(2, spaceIndex - 2);
                 name = line.substr(spaceIndex + 1);
             }
         }
@@ -26,7 +29,6 @@ void input(string &line, char &option, int &num, string &name)
         break;
     }
 }
-
 
 int main(void)
 {
@@ -41,19 +43,19 @@ int main(void)
         input(line, option, num, name);
         switch (option)
         {
-        case 'q':
+        case 'q': // quit
             break;
             break;
 
-        case 'a':
-            bst.insert_node(num,name);
+        case 'a': // add # name
+            bst.insert_node(num, name);
             break;
 
-        case 'd':
+        case 'd': // del #
             bst.delete_node(num);
             break;
-        
-        case 'p':
+
+        case 'p': // print
             bst.Print();
             break;
         }
