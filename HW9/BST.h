@@ -23,4 +23,5 @@ public:
     void inorder(tree_node *ptr);           // inorder system
     void Print();                           // printout result
     tree_node *search_insert(string key);      // set if value can be added
+    tree_node *search(string key);  
 };

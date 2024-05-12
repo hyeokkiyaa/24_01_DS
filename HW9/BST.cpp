@@ -35,7 +35,7 @@ bool BST::IsEmpty()
 void BST::insert_node(string find, string data)
 {
     tree_node *ptr = NULL, *parent = NULL; // ptr to pointing current node, parent node as the top node where node will be added
-    parent = search_insert(find);           // finding parentnode to add in
+    parent = search_insert(find);          // finding parentnode to add in
     if (parent || IsEmpty())               // if parent is NULL or binary tree is empty meaning ready to add
     {
         ptr = new tree_node; // give memory
@@ -119,6 +119,29 @@ tree_node *BST::search_insert(string key)
         }
     }
     return NULL; // empty case
+}
+
+tree_node *BST::search(string key)
+{
+    tree_node *tree = root;
+
+    while (tree)
+    {
+        if (key == tree->key)
+        {
+            return tree;
+        }
+        else if (key < tree->key) // if finding value is smaller then left_child to go through
+        {
+            tree = tree->left_child; // otherwise left_child to be connected
+        }
+        // same as above
+        else
+        {
+            tree = tree->right_child;
+        }
+    }
+    return NULL;
 }
 
 void BST::delete_node(string find)
