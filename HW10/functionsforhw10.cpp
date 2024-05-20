@@ -88,6 +88,10 @@ void counting(string line, countWord *list, int *count)
 
 void printCheck(countWord *list, int *count)
 {
+    if((*count)<5){
+        cout << "Number is not enough to print out the 5 most frequent words";
+        return;
+    }
     for (int i = (*count)-1; i > (*count)-6; i--)
     {
         cout << list[i].word << ":" << list[i].totalNum << endl;
@@ -100,7 +104,7 @@ void swap(countWord *first, countWord *second){
     *second = temp;
 }
 
-void quickSort(countWord *list, int left, int right){
+void quickSortNo(countWord *list, int left, int right){
     int pivot, i,j;
     if(left<right){
         i =left;
@@ -113,7 +117,46 @@ void quickSort(countWord *list, int left, int right){
                 swap(&list[i], &list[j]);
         }while(i<j);
         swap(&list[left], &list[j]);
-        quickSort(list,left,j-1);
-        quickSort(list,j+1,right);
+        quickSortNo(list,left,j-1);
+        quickSortNo(list,j+1,right);
+    }
+}
+
+void quickSortString(countWord *list, int left, int right){
+    int i,j;
+    string pivot;
+    if(left<right){
+        i =left;
+        j=right+1;
+        pivot = list[left].word;
+        do {
+            do i++; while(i <= right && list[i].word > pivot);
+            do j--; while(j > left && list[j].word < pivot);
+            if(i<j)
+                swap(&list[i], &list[j]);
+        }while(i<j);
+        swap(&list[left], &list[j]);
+        quickSortString(list,left,j-1);
+        quickSortString(list,j+1,right);
+    }
+}
+
+void getData(countWord *list, int *count)
+{
+    string filename;
+    cout << "Type textfile: ";
+    cin >> filename;
+
+    ifstream file(filename);
+    if (!file.is_open())
+    {
+        cout << "File does not exist";
+        return;
+    }
+    string line;
+    while (getline(file, line))
+    {
+        line = removePunctuation(line);
+        counting(line, list, count);
     }
 }

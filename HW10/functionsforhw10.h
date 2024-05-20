@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <fstream>
 using namespace std;
 
 struct countWord
@@ -15,4 +16,6 @@ string toUpperCase(string word);
 void counting(string line, countWord *list, int *count);
 void printCheck(countWord *list, int *count);
 void swap(countWord *first, countWord *second);
-void quickSort(countWord *list, int left, int right);
+void quickSortNo(countWord *list, int left, int right);
+void quickSortString(countWord *list, int left, int right);
+void getData(countWord *list, int *count);
