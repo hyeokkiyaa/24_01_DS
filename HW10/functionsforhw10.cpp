@@ -88,56 +88,56 @@ void counting(string line, countWord *list, int *count)
 
 void printCheck(countWord *list, int *count)
 {
-    if((*count)<5){
+    if ((*count) < 5)
+    {
         cout << "Number is not enough to print out the 5 most frequent words";
         return;
     }
-    for (int i = (*count)-1; i > (*count)-6; i--)
+    for (int i = 0; i < 5; i++)
     {
         cout << list[i].word << ":" << list[i].totalNum << endl;
     }
 }
 
-void swap(countWord *first, countWord *second){
+void print(countWord *list, int *count)
+{
+    for (int i = 0; i < (*count); i++)
+    {
+        cout << list[i].word << ":" << list[i].totalNum << endl;
+    }
+}
+
+void swap(countWord *first, countWord *second)
+{
     countWord temp = *first;
     *first = *second;
     *second = temp;
 }
 
-void quickSortNo(countWord *list, int left, int right){
-    int pivot, i,j;
-    if(left<right){
-        i =left;
-        j=right+1;
-        pivot = list[left].totalNum;
-        do {
-            do i++; while(i <= right && list[i].totalNum < pivot);
-            do j--; while(j > left && list[j].totalNum > pivot);
-            if(i<j)
+void quickSort(countWord *list, int left, int right)
+{
+    int pivotNum, i, j;
+    string pivotWord;
+    if (left < right)
+    {
+        i = left;
+        j = right + 1;
+        pivotNum = list[left].totalNum;
+        pivotWord = list[left].word;
+        do
+        {
+            do
+                i++;
+            while (i <= right && (list[i].totalNum > pivotNum || (list[i].totalNum == pivotNum && list[i].word < pivotWord)));
+            do
+                j--;
+            while (j > left && (list[j].totalNum < pivotNum || (list[j].totalNum == pivotNum && list[j].word > pivotWord)));
+            if (i < j)
                 swap(&list[i], &list[j]);
-        }while(i<j);
+        } while (i < j);
         swap(&list[left], &list[j]);
-        quickSortNo(list,left,j-1);
-        quickSortNo(list,j+1,right);
-    }
-}
-
-void quickSortString(countWord *list, int left, int right){
-    int i,j;
-    string pivot;
-    if(left<right){
-        i =left;
-        j=right+1;
-        pivot = list[left].word;
-        do {
-            do i++; while(i <= right && list[i].word > pivot);
-            do j--; while(j > left && list[j].word < pivot);
-            if(i<j)
-                swap(&list[i], &list[j]);
-        }while(i<j);
-        swap(&list[left], &list[j]);
-        quickSortString(list,left,j-1);
-        quickSortString(list,j+1,right);
+        quickSort(list, left, j - 1);
+        quickSort(list, j + 1, right);
     }
 }
 

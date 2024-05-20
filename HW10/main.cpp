@@ -14,23 +14,7 @@ int main(void)
         cout << "File is empty";
         return 0;
     }
-    quickSortNo(list, 0, n - 1);
-    int store = list[0].totalNum;
-    int index = 0;
-    int count = 0;
-    for (int i = 0; i < n; i++)
-    {
-        if (list[i].totalNum == store)
-        {
-            count++;
-        }
-        else
-        {
-            quickSortString(list, index, index + count);
-            index = i;
-            count = 0;
-            store = list[i].totalNum;
-        }
-    }
+
+    quickSort(list, 0, n - 1);
     printCheck(list, count);
 }
