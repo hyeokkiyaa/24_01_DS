@@ -18,4 +18,4 @@ void printCheck(countWord *list, int *count);               // result of top 5 w
 void swap(countWord *first, countWord *second);             // swap two values from list
 void quickSort(countWord *list, int left, int right);       // sort -> number then word
 void getData(countWord *list, int *count);                  // get Data from text file
-void print(countWord *list, int *count);                    // print all the value of the lists
+void print(countWord *list, int *count);                    // print all the value of the list

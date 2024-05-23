@@ -16,4 +16,6 @@ int main(void)
     }
     quickSort(list, 0, n - 1); // sort -> by number if numbers eqaul then words in dictionary order
     printCheck(list, count);   // printout result
+    delete[] list;
+    delete count;
 }
