@@ -4,6 +4,7 @@
 #include <iomanip>
 using namespace std;
 
+// for date variable
 typedef struct
 {
     int year;
@@ -11,6 +12,7 @@ typedef struct
     int day;
 } Date;
 
+// for person variable
 typedef struct
 {
     string name;
@@ -19,6 +21,7 @@ typedef struct
     string phone;
 } Person;
 
+// class Node for linked list
 class Node
 {
 public:
@@ -31,20 +34,23 @@ public:
     }
 };
 
+// class Contact main class for this assignment
 class Contact
 {
 private:
-    Node *list;
-    static int totalNum;
-    Date str2date(const string strdate);
+    Node *list;                          // linked list dynamically set memory
+    static int totalNum;                 // for checking number of data set
+    Date str2date(const string strdate); // change string into suitable date format
 
 public:
-    Contact();
-    ~Contact();
-    void addContact(string infoLine);
-    void load();
-    void print();
-    void save();
+    Contact();                        // constructor set list as nullptr
+    ~Contact();                       // deconstructor (delete memory)
+    void addContact(string infoLine); // add contact into list
+    void load();                      // load contactList.txt which saves all the contacts
+    void print();                     // printout contact numbers
+    void save();                      // save into contactList.txt
+    void retrieve();                  // get value by email or name
+    void printFormat(Node *ptr);
 };
 
 int Contact::totalNum = 0;
@@ -68,6 +74,7 @@ Contact::~Contact()
 
 Date Contact::str2date(const string strdate)
 {
+    // change string into suitable int values
     Date dist;
     dist.year = stoi(strdate.substr(0, 5));
     dist.month = stoi(strdate.substr(5, 2));
@@ -96,7 +103,7 @@ void Contact::addContact(string infoLine)
 
     // email
     index = infoLine.find(";");
-    getValue = infoLine.substr(0, index);
+    getValue = infoLine.substr(1, index-1);
     addPerson.email = getValue;
     infoLine = infoLine.substr(index + 1);
 
@@ -104,12 +111,12 @@ void Contact::addContact(string infoLine)
     addPerson.phone = infoLine;
 
     Node *add = new Node(addPerson);
-    if (list == nullptr)
+    if (list == nullptr) // meaning no data inserted in
     {
         list = add;
     }
     else
-    {
+    { // otherwise add to linked list
         Node *ptr = list;
         while (ptr->next != nullptr)
         {
@@ -118,14 +125,80 @@ void Contact::addContact(string infoLine)
         ptr->next = add;
     }
 
-    totalNum++;
+    totalNum++; // incease total number of linked list
+}
+
+void Contact::printFormat(Node *ptr)
+{
+    cout << ptr->info.name << " ";
+    cout << ptr->info.dob.year << "-";
+    cout << setfill('0') << setw(2) << ptr->info.dob.month << "-";
+    cout << setfill('0') << setw(2) << ptr->info.dob.day;
+    cout << ptr->info.email;
+    cout << ptr->info.phone << endl;
+}
+
+void Contact::retrieve()
+{
+    int option = 0;
+    while (option != 1 && option != 2)
+    {
+        cout << "By which you want to find contact? " << endl;
+        cout << "1. Name" << endl;
+        cout << "2. Email" << endl;
+        cout << "-> ";
+        cin >> option;
+        if (option != 1 && option != 2)
+        {
+            cout << "Option must be either 1 or 2. Try again" << endl;
+        }
+    }
+    cin.ignore();
+    string value;
+    if (option == 1)
+    {
+        cout << "Type name: ";
+    }
+    else
+    {
+        cout << "Type email: ";
+    }
+
+    getline(cin, value);
+
+    Node *ptr = list;
+    if (option == 1)
+    {
+        while (ptr != nullptr)
+        {
+            if (ptr->info.name == value)
+            {
+                printFormat(ptr);
+                break;
+            }
+            ptr = ptr->next;
+        }
+    }
+    else
+    {
+        while (ptr != nullptr)
+        {
+            //cout << ptr->info.email << endl;
+            if (ptr->info.email == value)
+            {
+                printFormat(ptr);
+                break;
+            }
+            ptr = ptr->next;
+        }
+    }
 }
 
 void Contact::load()
 {
     string line;
     ifstream file("contactList.txt");
-    if (!file.is_open())
+    if (!file.is_open()) // if file does not exist
     {
         cout << "NO data file!" << endl;
         return;
@@ -133,10 +206,11 @@ void Contact::load()
 
     while (getline(file, line))
     {
-        if(line==""){
+        if (line == "") // if line is empty just stop getting file
+        {
             break;
         }
-        addContact(line);
+        addContact(line); // otherwise add to the linked list
     }
     file.close();
     cout << ">" << totalNum << " loaded from data file!" << endl;
@@ -144,9 +218,9 @@ void Contact::load()
 
 void Contact::save()
 {
-    ofstream writeFile;
+    ofstream writeFile; // to write into the file
     writeFile.open("contactList.txt");
-    if (!writeFile.is_open())
+    if (!writeFile.is_open()) // if file does not exist
     {
         cout << "Error-> Data file cannot be found!!!!" << endl;
         return;
@@ -154,30 +228,25 @@ void Contact::save()
 
     Node *ptr = list;
     string input;
-    while (ptr != nullptr)
+    while (ptr != nullptr) // write value into the textfile
     {
         writeFile << ptr->info.name << "; ";
         writeFile << ptr->info.dob.year;
         writeFile << setfill('0') << setw(2) << ptr->info.dob.month;
-        writeFile << setfill('0') << setw(2) << ptr->info.dob.day <<"; ";
-        writeFile << ptr->info.email << "; ";
-        writeFile << ptr->info.phone <<endl;
+        writeFile << setfill('0') << setw(2) << ptr->info.dob.day << ";";
+        writeFile << ptr->info.email << ";";
+        writeFile << ptr->info.phone << endl;
         ptr = ptr->next;
     }
     writeFile.close();
 }
 
-void Contact::print()
+void Contact::print() // printint result
 {
     Node *ptr = list;
     while (ptr != nullptr)
     {
-        cout << ptr->info.name << " ";
-        cout << ptr->info.dob.year << "-";
-        cout << setfill('0') << setw(2) << ptr->info.dob.month << "-";
-        cout << setfill('0') << setw(2) << ptr->info.dob.day << " ";
-        cout << ptr->info.email << " ";
-        cout << ptr->info.phone << endl;
+        printFormat(ptr);
         ptr = ptr->next;
     }
 }
@@ -186,11 +255,9 @@ int main(void)
 {
     Contact ct;
     ct.load();
-    string newPerson;
-    getline(cin, newPerson);
-    ct.addContact(newPerson);
     ct.save();
-    ct.print();
+    
+    ct.retrieve();
 
     return 0;
 }
