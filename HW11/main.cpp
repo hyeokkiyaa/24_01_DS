@@ -44,6 +44,7 @@ public:
     void addContact(string infoLine);
     void load();
     void print();
+    void save();
 };
 
 int Contact::totalNum = 0;
@@ -92,7 +93,7 @@ void Contact::addContact(string infoLine)
     Date addDate = str2date(getValue);
     addPerson.dob = addDate;
     infoLine = infoLine.substr(index + 1);
-    
+
     // email
     index = infoLine.find(";");
     getValue = infoLine.substr(0, index);
@@ -132,10 +133,38 @@ void Contact::load()
 
     while (getline(file, line))
     {
+        if(line==""){
+            break;
+        }
         addContact(line);
     }
-    
+    file.close();
     cout << ">" << totalNum << " loaded from data file!" << endl;
+}
+
+void Contact::save()
+{
+    ofstream writeFile;
+    writeFile.open("contactList.txt");
+    if (!writeFile.is_open())
+    {
+        cout << "Error-> Data file cannot be found!!!!" << endl;
+        return;
+    }
+
+    Node *ptr = list;
+    string input;
+    while (ptr != nullptr)
+    {
+        writeFile << ptr->info.name << "; ";
+        writeFile << ptr->info.dob.year;
+        writeFile << setfill('0') << setw(2) << ptr->info.dob.month;
+        writeFile << setfill('0') << setw(2) << ptr->info.dob.day <<"; ";
+        writeFile << ptr->info.email << "; ";
+        writeFile << ptr->info.phone <<endl;
+        ptr = ptr->next;
+    }
+    writeFile.close();
 }
 
 void Contact::print()
@@ -157,7 +186,10 @@ int main(void)
 {
     Contact ct;
     ct.load();
-
+    string newPerson;
+    getline(cin, newPerson);
+    ct.addContact(newPerson);
+    ct.save();
     ct.print();
 
     return 0;
