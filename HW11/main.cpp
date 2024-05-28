@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string>
+#include <fstream>
+#include <iomanip>
 using namespace std;
 
 typedef struct
@@ -40,6 +42,7 @@ public:
     Contact();
     ~Contact();
     void addContact(string infoLine);
+    void load();
     void print();
 };
 
@@ -66,8 +69,8 @@ Date Contact::str2date(const string strdate)
 {
     Date dist;
     dist.year = stoi(strdate.substr(0, 5));
-    dist.month = stoi(strdate.substr(4, 2));
-    dist.day = stoi(strdate.substr(6, 2));
+    dist.month = stoi(strdate.substr(5, 2));
+    dist.day = stoi(strdate.substr(7, 2));
     return dist;
 }
 
@@ -89,7 +92,7 @@ void Contact::addContact(string infoLine)
     Date addDate = str2date(getValue);
     addPerson.dob = addDate;
     infoLine = infoLine.substr(index + 1);
-
+    
     // email
     index = infoLine.find(";");
     getValue = infoLine.substr(0, index);
@@ -117,6 +120,24 @@ void Contact::addContact(string infoLine)
     totalNum++;
 }
 
+void Contact::load()
+{
+    string line;
+    ifstream file("contactList.txt");
+    if (!file.is_open())
+    {
+        cout << "NO data file!" << endl;
+        return;
+    }
+
+    while (getline(file, line))
+    {
+        addContact(line);
+    }
+    
+    cout << ">" << totalNum << " loaded from data file!" << endl;
+}
+
 void Contact::print()
 {
     Node *ptr = list;
@@ -124,8 +145,8 @@ void Contact::print()
     {
         cout << ptr->info.name << " ";
         cout << ptr->info.dob.year << "-";
-        cout << ptr->info.dob.month << "-";
-        cout << ptr->info.dob.day << " ";
+        cout << setfill('0') << setw(2) << ptr->info.dob.month << "-";
+        cout << setfill('0') << setw(2) << ptr->info.dob.day << " ";
         cout << ptr->info.email << " ";
         cout << ptr->info.phone << endl;
         ptr = ptr->next;
@@ -135,10 +156,8 @@ void Contact::print()
 int main(void)
 {
     Contact ct;
-    string exampleString = "henry choi; 20190303; hchoi@handong.edu; 010-1234-5678";
-    ct.addContact(exampleString);
-    exampleString = "Hyeokmin Kwon; 20010322; 22100061@handong.edu; 010-8695-7574";
-    ct.addContact(exampleString);
+    ct.load();
+
     ct.print();
 
     return 0;
