@@ -137,6 +137,8 @@ int main(void)
     Contact ct;
     string exampleString = "henry choi; 20190303; hchoi@handong.edu; 010-1234-5678";
     ct.addContact(exampleString);
+    exampleString = "Hyeokmin Kwon; 20010322; 22100061@handong.edu; 010-8695-7574";
+    ct.addContact(exampleString);
     ct.print();
 
     return 0;
