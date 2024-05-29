@@ -1,0 +1,5 @@
+ChangHyeon Koo; 19990111; koo@handong.edu; 010-0000-0000
+Hyeokmin Kwon; 20010322; 22100061@handong.ac.kr; 010-8695-7574
+Amy; 20010505; amy@gmail.com; 010-6935-7574
+Hyeokju Kwon; 20020503; 22100062@handong.ac.kr; 010-8882-8970
+henry choi; 20190303; choi@handong.edu; 010-1234-5678
