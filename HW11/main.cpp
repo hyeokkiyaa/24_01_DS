@@ -51,6 +51,7 @@ public:
     void save();                      // save into contactList.txt
     void retrieve();                  // get value by email or name
     void printFormat(Node *ptr);
+    void checkPrint();
 };
 
 int Contact::totalNum = 0;
@@ -103,9 +104,9 @@ void Contact::addContact(string infoLine)
 
     // email
     index = infoLine.find(";");
-    getValue = infoLine.substr(1, index-1);
+    getValue = infoLine.substr(1, index - 1);
     addPerson.email = getValue;
-    infoLine = infoLine.substr(index + 1);
+    infoLine = infoLine.substr(index + 2);
 
     // phone number
     addPerson.phone = infoLine;
@@ -133,8 +134,8 @@ void Contact::printFormat(Node *ptr)
     cout << ptr->info.name << " ";
     cout << ptr->info.dob.year << "-";
     cout << setfill('0') << setw(2) << ptr->info.dob.month << "-";
-    cout << setfill('0') << setw(2) << ptr->info.dob.day;
-    cout << ptr->info.email;
+    cout << setfill('0') << setw(2) << ptr->info.dob.day << " ";
+    cout << ptr->info.email << " ";
     cout << ptr->info.phone << endl;
 }
 
@@ -183,7 +184,7 @@ void Contact::retrieve()
     {
         while (ptr != nullptr)
         {
-            //cout << ptr->info.email << endl;
+            // cout << ptr->info.email << endl;
             if (ptr->info.email == value)
             {
                 printFormat(ptr);
@@ -192,6 +193,18 @@ void Contact::retrieve()
             ptr = ptr->next;
         }
     }
+}
+
+void Contact::checkPrint()
+{
+    Node *ptr = list;
+    cout << ptr->info.name << endl;
+    cout <<ptr->info.dob.year << endl;
+    cout <<ptr->info.dob.month << endl;
+    cout <<ptr->info.dob.day << endl;
+    cout << ptr->info.email << endl;
+    cout << ptr->info.phone << endl;
+    
 }
 
 void Contact::load()
@@ -233,8 +246,8 @@ void Contact::save()
         writeFile << ptr->info.name << "; ";
         writeFile << ptr->info.dob.year;
         writeFile << setfill('0') << setw(2) << ptr->info.dob.month;
-        writeFile << setfill('0') << setw(2) << ptr->info.dob.day << ";";
-        writeFile << ptr->info.email << ";";
+        writeFile << setfill('0') << setw(2) << ptr->info.dob.day << "; ";
+        writeFile << ptr->info.email << "; ";
         writeFile << ptr->info.phone << endl;
         ptr = ptr->next;
     }
@@ -255,9 +268,8 @@ int main(void)
 {
     Contact ct;
     ct.load();
-    ct.save();
-    
     ct.retrieve();
+    ct.save();
 
     return 0;
 }
