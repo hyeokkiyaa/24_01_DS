@@ -53,6 +53,8 @@ public:
     void printFormat(Node *ptr);
     void checkPrint();
     void deletion();
+    void qsort(Node* ptr, int left, int right);
+    void sort();
 };
 
 int Contact::totalNum = 0;
@@ -148,6 +150,28 @@ void Contact::deletion(){
         else prev->next = curr->next;
         delete curr;
     }
+}
+
+
+
+void Contact::qsort(Node* ptr, int left, int right){
+    int pivot,i,j;
+    cout << "> Sort" << endl;
+    int option=0;
+    while (option != 1 && option != 2)
+    {
+        cout << "By which you want to find contact? " << endl;
+        cout << "1. Name" << endl;
+        cout << "2. Email" << endl;
+        cout << "-> ";
+        cin >> option;
+        if (option != 1 && option != 2)
+        {
+            cout << "Option must be either 1 or 2. Try again" << endl;
+        }
+    }
+    cin.ignore();
+
 }
 
 void Contact::printFormat(Node *ptr)
@@ -289,7 +313,6 @@ int main(void)
 {
     Contact ct;
     ct.load();
-    ct.deletion();
     ct.save();
 
     return 0;
