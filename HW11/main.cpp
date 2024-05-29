@@ -52,6 +52,7 @@ public:
     void retrieve();                  // get value by email or name
     void printFormat(Node *ptr);
     void checkPrint();
+    void deletion();
 };
 
 int Contact::totalNum = 0;
@@ -127,6 +128,26 @@ void Contact::addContact(string infoLine)
     }
 
     totalNum++; // incease total number of linked list
+}
+
+void Contact::deletion(){
+    cout << "> Delete " << endl;
+    cout << "> Type name to delete: ";
+    string name;
+    getline(cin, name);
+
+    Node* prev;
+    Node* curr = list;
+    while(curr && curr->info.name.compare(name) !=0){
+        prev= curr;
+        curr = curr->next;
+    }
+
+    if(curr){
+        if(curr == list) list = curr->next;
+        else prev->next = curr->next;
+        delete curr;
+    }
 }
 
 void Contact::printFormat(Node *ptr)
@@ -268,7 +289,7 @@ int main(void)
 {
     Contact ct;
     ct.load();
-    ct.retrieve();
+    ct.deletion();
     ct.save();
 
     return 0;
