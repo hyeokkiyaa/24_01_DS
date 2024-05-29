@@ -1,65 +1,5 @@
-#include <iostream>
-#include <string>
-#include <fstream>
-#include <iomanip>
+#include "contact.h"
 using namespace std;
-
-// for date variable
-typedef struct
-{
-    int year;
-    int month;
-    int day;
-} Date;
-
-// for person variable
-typedef struct
-{
-    string name;
-    Date dob;
-    string email;
-    string phone;
-} Person;
-
-// class Node for linked list
-class Node
-{
-public:
-    Person info;
-    Node *next;
-    Node(Person newInfo)
-    {
-        this->info = newInfo;
-        this->next = nullptr;
-    }
-};
-
-// class Contact main class for this assignment
-class Contact
-{
-private:
-    Node *list;                          // linked list dynamically set memory
-    static int totalNum;                 // for checking number of data set
-    Date str2date(const string strdate); // change string into suitable date format
-    void mergeSort(Node *&head, int option);
-    Node *mergeName(Node *left, Node *right);
-    Node *mergeDOB(Node *left, Node *right);
-    Node *getMiddle(Node *head);
-
-public:
-    Contact();                        // constructor set list as nullptr
-    ~Contact();                       // deconstructor (delete memory)
-    void addContact(string infoLine); // add contact into list
-    void load();                      // load contactList.txt which saves all the contacts
-    void print();                     // printout contact numbers
-    void save();                      // save into contactList.txt
-    void retrieve();                  // get value by email or name
-    void printFormat(Node *ptr);
-    void checkPrint();
-    void deletion();
-    void sort();
-};
-
 int Contact::totalNum = 0;
 
 Contact::Contact()
@@ -77,6 +17,26 @@ Contact::~Contact()
         delete temp;
         temp = next;
     }
+}
+
+void Contact::getValue()
+{
+    cout << "--Add Contact--" << endl;
+    cin.ignore();
+    cout << "=> Type name: ";
+    string name;
+    getline(cin, name);
+    cout << "=> Type DOB(eg. 20010505): ";
+    string dob;
+    getline(cin, dob);
+    cout << "=> Type E-Mail: ";
+    string email;
+    getline(cin, email);
+    cout << "=> Type phone number(eg. 010-1234-5678): ";
+    string phone;
+    getline(cin, phone);
+    string infoline = name + "; " + dob + "; " + email + "; " + phone;
+    addContact(infoline);
 }
 
 Date Contact::str2date(const string strdate)
@@ -131,14 +91,15 @@ void Contact::addContact(string infoLine)
         }
         ptr->next = add;
     }
-
+    
     totalNum++; // incease total number of linked list
 }
 
 void Contact::deletion()
 {
-    cout << "> Delete " << endl;
-    cout << "> Type name to delete: ";
+    cout << "--Delete Contact--" << endl;
+    cout << "=> Type name to delete: ";
+    cin.ignore();
     string name;
     getline(cin, name);
 
@@ -148,6 +109,32 @@ void Contact::deletion()
     {
         prev = curr;
         curr = curr->next;
+        if (curr == nullptr)
+        {
+            cout << "Name does not exist!!!!!" << endl
+                 << endl;
+            return;
+        }
+    }
+
+    printFormat(curr);
+    int option = 0;
+    while (option != 1 && option != 2)
+    {
+        cout << "Are you sure you want to delete contact information above?" << endl;
+        cout << "1. yes" << endl;
+        cout << "2. no" << endl;
+        cout << "=> ";
+        cin >> option;
+        if (option != 1 && option != 2)
+        {
+            cout << "Option must be either 1 or 2. Try again" << endl;
+        }
+    }
+    if (option == 2)
+    {
+        cout << endl;
+        return;
     }
 
     if (curr)
@@ -158,18 +145,22 @@ void Contact::deletion()
             prev->next = curr->next;
         delete curr;
     }
+
+    totalNum--;
+    cout << "Contact deleted!!!" << endl
+         << endl;
 }
 
 void Contact::sort()
 {
-    cout << "> Sort" << endl;
+    cout << "--Sort Contact--" << endl;
     int option = 0;
     while (option != 1 && option != 2)
     {
-        cout << "By which you want to sort contact? " << endl;
+        cout << "=> By which you want to sort contact? " << endl;
         cout << "1. Name" << endl;
         cout << "2. Date of Birth" << endl;
-        cout << "-> ";
+        cout << "=> ";
         cin >> option;
         if (option != 1 && option != 2)
         {
@@ -177,6 +168,7 @@ void Contact::sort()
         }
     }
     mergeSort(list, option);
+    cout << endl;
 }
 
 void Contact::mergeSort(Node *&head, int option)
@@ -196,8 +188,10 @@ void Contact::mergeSort(Node *&head, int option)
     if (option == 1)
     {
         head = mergeName(head, nextToMiddle);
-    } else {
-        head = mergeDOB(head,nextToMiddle);
+    }
+    else
+    {
+        head = mergeDOB(head, nextToMiddle);
     }
 }
 
@@ -274,23 +268,24 @@ Node *Contact::getMiddle(Node *head)
 
 void Contact::printFormat(Node *ptr)
 {
-    cout << ptr->info.name << " ";
+    cout << ptr->info.name << " | ";
     cout << ptr->info.dob.year << "-";
     cout << setfill('0') << setw(2) << ptr->info.dob.month << "-";
-    cout << setfill('0') << setw(2) << ptr->info.dob.day << " ";
-    cout << ptr->info.email << " ";
+    cout << setfill('0') << setw(2) << ptr->info.dob.day << " | ";
+    cout << ptr->info.email << " | ";
     cout << ptr->info.phone << endl;
 }
 
 void Contact::retrieve()
 {
+    cout << "--Find Contact--" << endl;
     int option = 0;
     while (option != 1 && option != 2)
     {
-        cout << "By which you want to find contact? " << endl;
+        cout << "=> By which you want to find contact? " << endl;
         cout << "1. Name" << endl;
         cout << "2. Email" << endl;
-        cout << "-> ";
+        cout << "=> ";
         cin >> option;
         if (option != 1 && option != 2)
         {
@@ -301,39 +296,55 @@ void Contact::retrieve()
     string value;
     if (option == 1)
     {
-        cout << "Type name: ";
+        cout << "=> Type name: ";
     }
     else
     {
-        cout << "Type email: ";
+        cout << "=> Type email: ";
     }
 
     getline(cin, value);
+    cout << endl;
 
     Node *ptr = list;
     if (option == 1)
     {
         while (ptr != nullptr)
         {
+
             if (ptr->info.name == value)
             {
                 printFormat(ptr);
+                cout << endl;
                 break;
             }
             ptr = ptr->next;
+            if (ptr == nullptr)
+            {
+                cout << "Name does not exist!!!" << endl
+                     << endl;
+                break;
+            }
         }
     }
     else
     {
         while (ptr != nullptr)
         {
-            // cout << ptr->info.email << endl;
+
             if (ptr->info.email == value)
             {
                 printFormat(ptr);
+                cout << endl;
                 break;
             }
             ptr = ptr->next;
+            if (ptr == nullptr)
+            {
+                cout << "Email does not exist!!!" << endl
+                     << endl;
+                break;
+            }
         }
     }
 }
@@ -394,14 +405,21 @@ void Contact::save()
         ptr = ptr->next;
     }
     writeFile.close();
+    cout << totalNum << " number of data saved!" << endl
+         << endl;
 }
 
 void Contact::print() // printint result
 {
     Node *ptr = list;
+    int count = 1;
+    cout << "=> Contact List" << endl;
+    cout << endl;
     while (ptr != nullptr)
     {
+        cout << count++ << ": ";
         printFormat(ptr);
         ptr = ptr->next;
     }
+    cout << endl;
 }
