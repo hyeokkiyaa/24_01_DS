@@ -103,8 +103,9 @@ double Calculator::calculate(string st)
         {
             double a, b; // get two values
             a = stack2.top();
-            b = stack2.top();
             stack2.pop();
+            b = stack2.top();
+            
             stack2.pop();
             stack2.push(doOperator(ch, a, b)); // do calculations in each case
         }
