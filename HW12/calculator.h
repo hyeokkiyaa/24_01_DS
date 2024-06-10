@@ -1,11 +1,9 @@
 #ifndef __CALCULATOR_H__
 #define __CALCULATOR_H__
 
-#include "stack.h"
-#include "stack2.h"
+#include <stack>
 #include <iostream>
 #include <string>
-#include <sstream>
 
 using namespace std;
 
@@ -13,8 +11,8 @@ class Calculator
 {
 private:
     string PostFixEquation="";
-    Stack *stack; // pointer to Stack object
-    Stack2 *stack2;
+    stack<char> stack; // pointer to Stack object
+    stack<int> stack2;
 
 public:
     // Member functions

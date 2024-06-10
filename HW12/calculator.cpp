@@ -4,8 +4,7 @@ using namespace std;
 
 string Calculator::getPostFixEquation(string st)
 {
-    Stack *stack = new Stack(100); // Stack class (for char value) called
-
+    
     int length = st.length(); // length of the string that is got from the user
 
     string number; // var for number to be changed later
@@ -34,43 +33,41 @@ string Calculator::getPostFixEquation(string st)
         }
         else if (isOperator(ch)) // if it is operator
         {
-            while (!stack->IsEmptyS() && priority(stack->Peek()) >= priority(ch))
+            while (!stack.empty() && priority(stack.top()) >= priority(ch))
             {                                    // check if the stack is empty or not and if ch's priority is higher
-                PostFixEquation += stack->Pop(); // if not then add to the return answer
+                PostFixEquation += stack.pop(); // if not then add to the return answer
                 PostFixEquation += " ";
             }
-            stack->Push(ch); // otherwise just push
+            stack.push(ch); // otherwise just push
         }
 
         else if (ch == '(') // if it is open parenthesis
         {
-            stack->Push(ch); // push it to stack
+            stack.push(ch); // push it to stack
         }
         else if (ch == ')') // if ch is closing parenthesis
         {
-            while (!stack->IsEmptyS() && stack->Peek() != '(') // until finding open parenthesis
+            while (!stack.empty() && stack.top() != '(') // until finding open parenthesis
             {
-                PostFixEquation += stack->Pop(); // stack pop and add to result answer
+                PostFixEquation += stack.pop(); // stack pop and add to result answer
                 PostFixEquation += " ";
             }
-            stack->Pop(); // removing opening parenthesis
+            stack.pop(); // removing opening parenthesis
         }
     }
 
-    while (!stack->IsEmptyS()) // the rest in the stack to be pop out
+    while (!stack.empty()) // the rest in the stack to be pop out
     {
-        PostFixEquation += stack->Pop();
+        PostFixEquation += stack.pop();
         PostFixEquation += " ";
     }
 
-    delete stack; // free the memory
     return PostFixEquation;
 }
 
 // calculating postfixedequation
 double Calculator::calculate(string st)
 {
-    Stack2 *stack2 = new Stack2(100); // stack2 class allocate memory (double var type)
     string number;                    // number to be formed
     double result;                    // returning result
     int length = st.length();         // length of the string that is called
@@ -93,19 +90,18 @@ double Calculator::calculate(string st)
                 number += st[i + shift];
                 shift++;
             }
-            stack2->Push2(stod(number)); // number to be pushed into the stack
+            stack2.push(stod(number)); // number to be pushed into the stack
             i += shift - 1;
         }
         else if (isOperator(ch)) // if it is operator
         {
             double a, b; // get two values
-            a = stack2->Pop2();
-            b = stack2->Pop2();
-            stack2->Push2(doOperator(ch, a, b)); // do calculations in each case
+            a = stack2.pop();
+            b = stack2.pop();
+            stack2.push(doOperator(ch, a, b)); // do calculations in each case
         }
     }
-    result = stack2->Pop2(); // result to be added
-    delete stack2;           // free the memory
+    result = stack2.pop(); // result to be added
     return result;
 }
 
