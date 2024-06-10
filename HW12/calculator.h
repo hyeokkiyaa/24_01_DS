@@ -12,7 +12,7 @@ class Calculator
 private:
     string PostFixEquation="";
     stack<char> stack; // pointer to Stack object
-    stack<int> stack2;
+    std::stack<double> stack2;
 
 public:
     // Member functions

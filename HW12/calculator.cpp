@@ -35,7 +35,9 @@ string Calculator::getPostFixEquation(string st)
         {
             while (!stack.empty() && priority(stack.top()) >= priority(ch))
             {                                    // check if the stack is empty or not and if ch's priority is higher
-                PostFixEquation += stack.pop(); // if not then add to the return answer
+                char charadd = stack.top();
+                stack.pop();
+                PostFixEquation += charadd; // if not then add to the return answer
                 PostFixEquation += " ";
             }
             stack.push(ch); // otherwise just push
@@ -49,7 +51,9 @@ string Calculator::getPostFixEquation(string st)
         {
             while (!stack.empty() && stack.top() != '(') // until finding open parenthesis
             {
-                PostFixEquation += stack.pop(); // stack pop and add to result answer
+                char charadd = stack.top();
+                stack.pop();
+                PostFixEquation += charadd; // stack pop and add to result answer
                 PostFixEquation += " ";
             }
             stack.pop(); // removing opening parenthesis
@@ -58,7 +62,9 @@ string Calculator::getPostFixEquation(string st)
 
     while (!stack.empty()) // the rest in the stack to be pop out
     {
-        PostFixEquation += stack.pop();
+        char charadd = stack.top();
+        stack.pop();
+        PostFixEquation += charadd;
         PostFixEquation += " ";
     }
 
@@ -96,12 +102,16 @@ double Calculator::calculate(string st)
         else if (isOperator(ch)) // if it is operator
         {
             double a, b; // get two values
-            a = stack2.pop();
-            b = stack2.pop();
+            a = stack2.top();
+            b = stack2.top();
+            stack2.pop();
+            stack2.pop();
             stack2.push(doOperator(ch, a, b)); // do calculations in each case
         }
     }
-    result = stack2.pop(); // result to be added
+    double stacklast = stack2.top();
+    result = stacklast; // result to be added
+    stack2.pop();
     return result;
 }
 
